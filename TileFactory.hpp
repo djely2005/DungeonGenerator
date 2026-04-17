@@ -1,8 +1,8 @@
 #pragma once
 #include "Tile.hpp"
-#include <string>
+#include "TileType.hpp"
 
 class TileFactory{
 public:
-    Tile* create(std::string);
+    Tile* create(TileType);
 };
