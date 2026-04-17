@@ -5,7 +5,7 @@
 
 class Dungeon{
 private:
-    std::vector<Tile*> grid;
+    std::vector<std::vector<Tile*>> grid;
 public:
     void generate(int, int);
     void render();
