@@ -1,3 +1,4 @@
+#pragma once
 #include "Ui.hpp"
 
 class Tile: public Ui{

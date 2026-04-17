@@ -1,3 +1,4 @@
+#pragma once
 #include "Tile.hpp"
 #include "Ui.hpp"
 
