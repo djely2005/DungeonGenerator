@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "Tile.hpp";
-#include "Ui.hpp";
+#include "Tile.hpp"
+#include "Ui.hpp"
 
 class Dungeon{
 private:
