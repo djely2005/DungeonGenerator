@@ -6,7 +6,8 @@
 class Trap : public Ui, public Tile
 {
 private:
-    int degats; 
+    int degats;
+
 public:
     void render(char);
 };

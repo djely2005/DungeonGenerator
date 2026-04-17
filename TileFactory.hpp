@@ -2,7 +2,8 @@
 #include "Tile.hpp"
 #include "TileType.hpp"
 
-class TileFactory{
+class TileFactory
+{
 public:
-    Tile* create(TileType);
+    Tile *create(TileType);
 };

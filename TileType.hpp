@@ -1,6 +1,7 @@
 #pragma once
 
-enum TileType{
+enum TileType
+{
     Wall,
     Treasure,
     Trap,

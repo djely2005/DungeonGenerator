@@ -1,5 +1,6 @@
 #pragma once
-enum Direction{
+enum Direction
+{
     Top,
     Bottom,
     Left,

@@ -6,7 +6,8 @@
 class Treasure : public Ui, public Tile
 {
 private:
-    int value; 
+    int value;
+
 public:
     void render(char);
 };

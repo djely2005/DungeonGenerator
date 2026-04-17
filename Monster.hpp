@@ -6,7 +6,8 @@
 class Monster : public Ui, public Tile
 {
 private:
-    int pv; 
+    int pv;
+
 public:
     void render(char);
 };

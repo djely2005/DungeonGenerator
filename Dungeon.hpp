@@ -3,19 +3,24 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Dungeon{
+class Dungeon
+{
 private:
-    std::vector<std::vector<Tile*>> grid;
-    static Dungeon* instance;
+    std::vector<std::vector<Tile *>> grid;
+    static Dungeon *instance;
+
 private:
-    Dungeon(){}
+    Dungeon() = default;
+    Dungeon(int);
+
 public:
     void generate(int, int);
     void render();
     void findPath();
-    static Dungeon* getInstance(){
-        if(instance == nullptr)
-            instance = new Dungeon();
+    static Dungeon *getInstance(int size = 5)
+    {
+        if (instance == nullptr)
+            instance = new Dungeon(size);
         return instance;
     }
 };
