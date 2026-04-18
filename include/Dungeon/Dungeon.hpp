@@ -8,12 +8,13 @@ class Dungeon : public Ui
 {
 private:
     std::vector<Tile*> grid;
-    size_t size;
+    size_t height;
+    size_t width;
     static Dungeon* instance;
 
 private:
     Dungeon() = default;
-    Dungeon(size_t);
+    Dungeon(size_t, size_t);
 
 public:
     Dungeon(const Dungeon &) = delete;
@@ -23,10 +24,11 @@ public:
     void generate();
     void render(char) override;
     void findPath();
-    static Dungeon* getInstance(size_t size = 5 * 5)
+    std::vector<Tile*> operator[](int);
+    static Dungeon* getInstance(size_t height = 5, size_t width = 5)
     {
         if (instance == nullptr)
-            instance = new Dungeon(size);
+            instance = new Dungeon(height, width);
         return instance;
     }
 };

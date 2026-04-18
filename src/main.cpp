@@ -1,8 +1,8 @@
-#include "lib/Dungeon.hpp"
+#include "Dungeon/Dungeon.hpp"
 #include <iostream>
 using namespace std;
 
 int main(){
-    Dungeon::getInstance(25);
+    Dungeon::getInstance(5, 5);
     return 0;
 }
