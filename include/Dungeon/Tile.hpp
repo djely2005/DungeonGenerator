@@ -3,7 +3,9 @@
 
 class Tile : public Ui
 {
+public:
+    virtual ~Tile() {};
+
 protected:
-    virtual void render(char) = 0;
-    virtual ~Tile() = default;
+    virtual char render() = 0;
 };

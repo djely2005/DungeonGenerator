@@ -5,5 +5,5 @@
 class TileFactory
 {
 public:
-    Tile *create(TileType);
+    static Tile* create(TileType);
 };

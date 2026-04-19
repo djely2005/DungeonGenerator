@@ -3,11 +3,17 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Trap : public Ui, public Tile
+namespace DungeonRoad
 {
-private:
-    int degats;
+    class Trap : public Tile
+    {
+    public:
+        virtual ~Trap() {};
 
-public:
-    void render(char);
-};
+    private:
+        int degats;
+
+    public:
+        char render() override;
+    };
+}

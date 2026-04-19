@@ -3,8 +3,16 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Wall : public Ui, public Tile
+namespace DungeonRoad
 {
-public:
-    void render(char);
-};
+    class Wall : public Tile
+    {
+    public:
+        Wall() = default;
+        virtual ~Wall() {};
+
+    public:
+        char render() override;
+    };
+
+}

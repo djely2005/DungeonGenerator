@@ -1,14 +1,18 @@
 #include "Dungeon/Dungeon.hpp"
-
-Dungeon* Dungeon::instance = nullptr;
+#include "Dungeon/TileFactory.hpp"
+Dungeon *Dungeon::instance = nullptr;
 
 Dungeon::Dungeon(size_t height, size_t width) : height(height), width(width)
-{
-    instance->grid.resize(height * width);
+{   
+    for (size_t i = 0; i < height * width; i++)
+    {
+        this->grid.push_back(TileFactory::create(TileType::Wall));
+    }
 }
 
-std::vector<Tile*> Dungeon::operator[](int index){
-    std::vector<Tile*> sub = {this->grid.begin() + width * index, this->grid.begin() + width * (index + 1) - 1};
+std::vector<Tile *> Dungeon::operator[](int index)
+{
+    std::vector<Tile *> sub = {this->grid.begin() + width * index, this->grid.begin() + width * (index + 1) - 1};
     return sub;
 }
 
@@ -25,6 +29,8 @@ void Dungeon::findPath()
 {
 }
 
-void Dungeon::render(char)
+char Dungeon::render()
 {
+
+    return '?';
 }

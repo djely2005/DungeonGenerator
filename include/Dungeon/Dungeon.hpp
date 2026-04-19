@@ -22,7 +22,7 @@ public:
 
     Tile* getTile(Coord);
     void generate();
-    void render(char) override;
+    char render() override;
     void findPath();
     std::vector<Tile*> operator[](int);
     static Dungeon* getInstance(size_t height = 5, size_t width = 5)

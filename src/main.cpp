@@ -3,6 +3,6 @@
 using namespace std;
 
 int main(){
-    Dungeon::getInstance(5, 5);
+    auto d = Dungeon::getInstance(5, 5);
     return 0;
 }

@@ -3,11 +3,17 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Treasure : public Ui, public Tile
+namespace DungeonRoad
 {
-private:
-    int value;
+    class Treasure : public Tile
+    {
+    public:
+        virtual ~Treasure() {};
 
-public:
-    void render(char);
-};
+    private:
+        int value;
+
+    public:
+        char render() override;
+    };
+}

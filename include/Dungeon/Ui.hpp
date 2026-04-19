@@ -3,5 +3,5 @@
 class Ui
 {
 protected:
-    virtual void render(char) = 0;
+    virtual char render() = 0;
 };

@@ -3,11 +3,18 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Monster : public Ui, public Tile
+namespace DungeonRoad
 {
-private:
-    int pv;
 
-public:
-    void render(char);
-};
+    class Monster : public Tile
+    {
+    public:
+        virtual ~Monster() {};
+
+    private:
+        int pv;
+
+    public:
+        char render() override;
+    };
+} // namespace DungeonRoad

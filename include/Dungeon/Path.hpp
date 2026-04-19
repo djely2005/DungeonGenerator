@@ -2,8 +2,15 @@
 #include "Tile.hpp"
 #include "Ui.hpp"
 
-class Path : public Ui, public Tile
+namespace DungeonRoad
 {
-public:
-    void render(char);
-};
+
+    class Path : public Tile
+    {
+    public:
+        virtual ~Path() {};
+
+    public:
+        char render() override;
+    };
+} // namespace DungeonRoad
