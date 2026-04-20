@@ -34,20 +34,15 @@ void Dungeon::findPath()
 
 char Dungeon::render()
 {
-    std::vector<char> display;
     for (size_t i = 0; i < height; ++i)
     {
         for (size_t j = 0; j < width; ++j)
         {
             /* code */
             std::span<Tile *> line = (*this)[i];
-            display.push_back(line[j]->render());
-            
+            std::cout << line[j]->render() ;
         }
-        display.push_back('\n');
-    }
-    for(char c: display){
-        std::cout << c ;
+        std::cout << '\n';
     }
     return '?';
 }
