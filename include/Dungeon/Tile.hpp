@@ -1,6 +1,8 @@
 #pragma once
 #include "Ui.hpp"
 
+class Dungeon;
+
 class Tile : public Ui
 {
 public:
@@ -8,4 +10,5 @@ public:
 
 protected:
     virtual char render() = 0;
+    friend class Dungeon;
 };

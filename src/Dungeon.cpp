@@ -1,5 +1,7 @@
 #include "Dungeon/Dungeon.hpp"
+#include "Dungeon/Tile.hpp"
 #include "Dungeon/TileFactory.hpp"
+#include "iostream"
 Dungeon *Dungeon::instance = nullptr;
 
 Dungeon::Dungeon(size_t height, size_t width) : height(height), width(width)
@@ -10,10 +12,11 @@ Dungeon::Dungeon(size_t height, size_t width) : height(height), width(width)
     }
 }
 
-std::vector<Tile *> Dungeon::operator[](int index)
+#include <span>
+
+std::span<Tile*> Dungeon::operator[](int index)
 {
-    std::vector<Tile *> sub = {this->grid.begin() + width * index, this->grid.begin() + width * (index + 1) - 1};
-    return sub;
+    return {grid.begin() + (width * index), static_cast<size_t>(width)};
 }
 
 Tile *Dungeon::getTile(Coord coord)
@@ -31,6 +34,20 @@ void Dungeon::findPath()
 
 char Dungeon::render()
 {
-
+    std::vector<char> display;
+    for (size_t i = 0; i < height; ++i)
+    {
+        for (size_t j = 0; j < width; ++j)
+        {
+            /* code */
+            std::span<Tile *> line = (*this)[i];
+            display.push_back(line[j]->render());
+            
+        }
+        display.push_back('\n');
+    }
+    for(char c: display){
+        std::cout << c ;
+    }
     return '?';
 }

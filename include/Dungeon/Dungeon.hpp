@@ -1,8 +1,10 @@
 #pragma once
 #include <vector>
-#include "Tile.hpp"
+#include <span>
 #include "Ui.hpp"
 #include "Coord.hpp"
+
+class Tile;
 
 class Dungeon : public Ui
 {
@@ -24,7 +26,7 @@ public:
     void generate();
     char render() override;
     void findPath();
-    std::vector<Tile*> operator[](int);
+    std::span<Tile*> operator[](int);
     static Dungeon* getInstance(size_t height = 5, size_t width = 5)
     {
         if (instance == nullptr)
