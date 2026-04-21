@@ -14,6 +14,7 @@ private:
     size_t height;
     size_t width;
     size_t padding;
+    int seed = 0;
     static Dungeon *instance;
 
 private:
@@ -24,6 +25,7 @@ public:
     size_t getHeight() const { return height; }
     size_t getWidth() const { return width; }
     size_t getPadding() const { return padding; }
+    int getSeed() const { return seed; }
 
     void setPadding(size_t p) { padding = p; }
 
@@ -31,7 +33,7 @@ public:
     Dungeon(const Dungeon &) = delete;
     Dungeon &operator=(const Dungeon &) = delete;
 
-    Tile *getTile(Coord &);
+    Tile *getTile(const Coord &);
     void generate();
     void render();
     void findPath();

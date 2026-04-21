@@ -8,7 +8,7 @@ namespace DungeonRoad
     class Limit : public Tile
     {
     public:
-        Limit() = default;
+        Limit();
         virtual ~Limit() {};
 
     public:

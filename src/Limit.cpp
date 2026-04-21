@@ -1,11 +1,16 @@
 #include "Dungeon/Limit.hpp"
 #include "Dungeon/Dungeon.hpp"
 
+DungeonRoad::Limit::Limit()
+{
+    visited = true;
+}
+
 char DungeonRoad::Limit::render(Coord *coord)
 {
     Dungeon *dungeon = Dungeon::getInstance();
     char c = '?';
-    
+
     if (coord->x == 0 || coord->x == static_cast<int>(dungeon->getWidth()) - 1)
     {
         c = '-';
