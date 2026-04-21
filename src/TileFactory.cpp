@@ -4,6 +4,7 @@
 #include "Dungeon/Trap.hpp"
 #include "Dungeon/Path.hpp"
 #include "Dungeon/Monster.hpp"
+#include "Dungeon/Limit.hpp"
 
 Tile* TileFactory::create(TileType tileType)
 {
@@ -24,6 +25,9 @@ Tile* TileFactory::create(TileType tileType)
         break;
     case TileType::Monster:
         result = new DungeonRoad::Monster();
+        break;
+    case TileType::Limit:
+        result = new DungeonRoad::Limit();
         break;
 
     default:

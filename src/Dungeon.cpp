@@ -5,45 +5,53 @@
 #include <span>
 #include <algorithm>
 #include <ranges>
+
 Dungeon *Dungeon::instance = nullptr;
 
 Dungeon::Dungeon(size_t height, size_t width) : height(height), width(width)
 {
+    setPadding(2);
+    addPadding();
+    grid.resize(this->height);
+    for (auto &&row : grid)
+    {
+        row.resize(this->width);
+        for (auto &&cell : row)
+        {
+            cell = TileFactory::create(TileType::Wall);
+        }
+    }
     addLimits();
-    grid.resize(this->height * this->width);
-    std::fill(grid.begin(), grid.end() - 1, TileFactory::create(TileType::Wall));
-    std::fill(grid.begin(), grid.end() - 1, TileFactory::create(TileType::Wall));
-
 }
 
-std::span<Tile *> Dungeon::operator[](int index)
+Tile *Dungeon::getTile(Coord &coord)
 {
-    return {grid.begin() + (width * index), static_cast<size_t>(width)};
-}
-
-std::views<Tile *> Dungeon::getColumn(int index)
-{
-    auto view =
-    grid
-    | std::views::enumerate
-    | std::views::filter([](auto p){return p.first % this->width == index})
-    | std::views::transform([](auto p){ return p.second; });
-    return view;
-}
-
-Tile *Dungeon::getTile(Coord coord)
-{
-    return this->grid[coord.x + width * coord.y];
+    return this->grid[coord.x][coord.y];
 }
 
 void Dungeon::addLimits()
 {
-    ++height;
-    ++width;
+    for (size_t i = 0; i < height; ++i)
+    {
+        for (size_t j = 0; j < width; ++j)
+        {
+            if (i % (height - 1) == 0 || j % (width - 1) == 0)
+            {
+                grid[i][j] = TileFactory::create(TileType::Limit);
+            }
+        }
+    }
+}
+
+void Dungeon::addPadding()
+{
+    height += padding;
+    width += padding;
 }
 
 void Dungeon::generate()
 {
+    startingCell = Coord{}; 
 }
 
 void Dungeon::findPath()
@@ -56,13 +64,11 @@ void Dungeon::render()
     {
         for (size_t j = 0; j < width; ++j)
         {
-            /* code */
-            std::span<Tile *> line = (*this)[i];
             Coord coord{
                 static_cast<int>(i),
                 static_cast<int>(j),
             };
-            std::cout << line[j]->render(&coord);
+            std::cout << this->getTile(coord)->render(&coord);
         }
         std::cout << '\n';
     }
