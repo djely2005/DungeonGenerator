@@ -1,8 +1,10 @@
 #pragma once
 #include "Ui.hpp"
 #include "Coord.hpp"
-#include "Tile.hpp"
 #include "Direction.hpp"
+
+class Tile;
+
 class Player : public Ui
 {
 private:
@@ -13,12 +15,16 @@ private:
 public:
     Coord getPosition() const { return position; }
     int getHealth() const { return health; }
+    void setHealth(int hp) { health = hp; }
     int getInventory() const { return inventory; }
+    void setInventory(int inv) { inventory = inv; }
 
-private:
+public:
     void removeHealth(int);
     void addToInventory(int);
-public:
+    void removeFromInventory(int);
     void move(Direction);
-    void useEffect(Tile*);
+
+private:
+    bool useEffect(Tile *);
 };

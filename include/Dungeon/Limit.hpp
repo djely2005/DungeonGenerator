@@ -1,17 +1,19 @@
 #pragma once
+
 #include "Tile.hpp"
 #include "Ui.hpp"
 
 namespace DungeonRoad
 {
-
-    class Path : public Tile
+    class Limit : public Tile
     {
     public:
-        virtual ~Path() {};
+        Limit() = default;
+        virtual ~Limit() {};
 
     public:
         char render(Coord *) override;
         bool effectOnPlayer(Player *) override;
     };
-} // namespace DungeonRoad
+
+}

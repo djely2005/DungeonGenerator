@@ -12,7 +12,8 @@ namespace DungeonRoad
         virtual ~Wall() {};
 
     public:
-        char render() override;
+        char render(Coord *) override;
+        bool effectOnPlayer(Player *) override;
     };
 
 }
