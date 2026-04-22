@@ -3,7 +3,7 @@
 
 DungeonRoad::Limit::Limit()
 {
-    visited = false;
+    visited = true;
 }
 
 char DungeonRoad::Limit::render(Coord *coord)
