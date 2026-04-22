@@ -4,6 +4,7 @@
 #include <span>
 #include "Ui.hpp"
 #include "Coord.hpp"
+#include "Direction.hpp"
 
 class Tile;
 
@@ -34,6 +35,8 @@ public:
     Dungeon &operator=(const Dungeon &) = delete;
 
     Tile *getTile(const Coord &);
+    void getPossibleDirection(std::vector<Direction>&, const Coord&);
+    void getUnvisitedPossibleDirection(std::vector<Direction>&, const Coord&, int);
     void generate();
     void render();
     void findPath();

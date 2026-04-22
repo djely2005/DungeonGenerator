@@ -8,6 +8,7 @@ namespace DungeonRoad
     class Path : public Tile
     {
     public:
+        Path();
         virtual ~Path() {};
 
     public:

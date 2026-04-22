@@ -3,7 +3,7 @@
 
 DungeonRoad::Limit::Limit()
 {
-    visited = true;
+    visited = false;
 }
 
 char DungeonRoad::Limit::render(Coord *coord)
@@ -11,12 +11,12 @@ char DungeonRoad::Limit::render(Coord *coord)
     Dungeon *dungeon = Dungeon::getInstance();
     char c = '?';
 
-    if (coord->x == 0 || coord->x == static_cast<int>(dungeon->getWidth()) - 1)
+    if (coord->y == 0 || coord->y == static_cast<int>(dungeon->getHeight()) - 1)
     {
         c = '-';
     }
 
-    if (coord->y == 0 || coord->y == static_cast<int>(dungeon->getHeight()) - 1)
+    if (coord->x == 0 || coord->x == static_cast<int>(dungeon->getWidth()) - 1)
     {
         c = '|';
     }
