@@ -12,8 +12,8 @@ class Dungeon
 {
 private:
     std::vector<std::vector<Tile *>> grid;
-    size_t height;
-    size_t width;
+    size_t row;
+    size_t column;
     size_t padding;
     int seed = 0;
     static Dungeon *instance;
@@ -23,8 +23,8 @@ private:
     Dungeon(size_t, size_t);
 
 public:
-    size_t getHeight() const { return height; }
-    size_t getWidth() const { return width; }
+    size_t getCol() const { return column; }
+    size_t getRow() const { return row; }
     size_t getPadding() const { return padding; }
     int getSeed() const { return seed; }
 
@@ -35,8 +35,11 @@ public:
     Dungeon &operator=(const Dungeon &) = delete;
 
     Tile *getTile(const Coord &);
-    void getPossibleDirection(std::vector<Direction>&, const Coord&);
-    void getUnvisitedPossibleDirection(std::vector<Direction>&, const Coord&, int);
+    void applyDirection(Coord &, Direction&);
+    bool checkRowBoundaries(int);
+    bool checkColumnBoundaries(int);
+    void getPossibleDirection(std::vector<Direction> &, const Coord &);
+    void getUnvisitedPossibleDirection(std::vector<Direction> &, const Coord &, int);
     void generate();
     void render();
     void findPath();
