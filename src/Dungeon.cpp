@@ -9,17 +9,18 @@
 
 Dungeon *Dungeon::instance = nullptr;
 
-Dungeon::Dungeon(size_t row, size_t column) : row(row), column(column)
+Dungeon::Dungeon(size_t row, size_t column)
 {
-    setPadding(2);
-    addPadding();
-    grid.resize(this->row);
-    for (auto &&row : grid)
+    padding = 2;
+    this->row = row + padding;
+    this->column = column + padding;
+    grid.resize(getRow());
+    for (size_t i = 0; i < getRow(); i++)
     {
-        row.resize(this->column);
-        for (auto &&cell : row)
+        grid[i].resize(getCol());
+        for (size_t j = 0; j < getCol(); j++)
         {
-            cell = TileFactory::create(TileType::Wall);
+            grid[i][j] = TileFactory::create(TileType::Wall);
         }
     }
     addLimits();
@@ -44,40 +45,19 @@ void Dungeon::addLimits()
     }
 }
 
-void Dungeon::addPadding()
-{
-    row += padding;
-    column += padding;
-}
-
-void Dungeon::getUnvisitedPossibleDirection(std::vector<Direction> &v, const Coord &coord, int length)
-{
-    if (coord.x + length < static_cast<int>(getCol()) && !getTile({coord.x + length, coord.y})->visited)
-    {
-        v.push_back(Direction::Right);
-    }
-    if (coord.x - length > 0 && !getTile({coord.x - length, coord.y})->visited)
-    {
-        v.push_back(Direction::Left);
-    }
-    if (coord.y + length < static_cast<int>(getRow()) && !getTile({coord.x, coord.y + length})->visited)
-    {
-        v.push_back(Direction::Bottom);
-    }
-    if (coord.y - length > 0 && !getTile({coord.x, coord.y - length})->visited)
-    {
-        v.push_back(Direction::Top);
-    }
-}
-
 bool Dungeon::checkRowBoundaries(int row)
 {
-    return 0 <= row < getRow();
+    return 0 <= row && row < static_cast<int>(getRow());
 }
 
 bool Dungeon::checkColumnBoundaries(int col)
 {
-    return 0 <= col < getCol();
+    return 0 <= col && col < static_cast<int>(getCol());
+}
+
+void Dungeon::replaceCase(const Coord &coord, Tile *tile)
+{
+    grid[coord.y][coord.x] = tile;
 }
 
 void Dungeon::applyDirection(Coord &coord, Direction &direction)
@@ -85,6 +65,28 @@ void Dungeon::applyDirection(Coord &coord, Direction &direction)
     switch (direction)
     {
     case Direction::Top:
+        if (checkRowBoundaries(coord.y - 1))
+        {
+            coord.y -= 1;
+        }
+        break;
+    case Direction::Bottom:
+        if (checkRowBoundaries(coord.y + 1))
+        {
+            coord.y += 1;
+        }
+        break;
+    case Direction::Left:
+        if (checkColumnBoundaries(coord.x - 1))
+        {
+            coord.x -= 1;
+        }
+        break;
+    case Direction::Right:
+        if (checkColumnBoundaries(coord.x + 1))
+        {
+            coord.x += 1;
+        }
         break;
 
     default:
@@ -92,90 +94,52 @@ void Dungeon::applyDirection(Coord &coord, Direction &direction)
     }
 };
 
+Coord Dungeon::getStartingCell()
+{
+    std::uniform_int_distribution<> boolDistrib(0, 1);
+    std::uniform_int_distribution<> rowDistrib(padding / 2, getCol() - 1 - padding / 2);
+    std::uniform_int_distribution<> columnDistrib(padding / 2, getRow() - 1 - padding / 2);
+    return {
+        columnDistrib(gen),
+        rowDistrib(gen),
+    };
+}
+
+void Dungeon::generate(Coord &coord)
+{
+    replaceCase(coord, TileFactory::create(TileType::Path));
+    render();
+
+    std::vector<Direction> dirs = {Direction::Top, Direction::Bottom, Direction::Left, Direction::Right};
+    std::shuffle(dirs.begin(), dirs.end(), gen);
+
+    for (Direction dir : dirs)
+    {
+        Coord mid = coord;
+        applyDirection(mid, dir);
+        Coord target = mid;
+        applyDirection(target, dir);
+
+        if (checkRowBoundaries(target.y) && checkColumnBoundaries(target.x))
+        {
+            if (!getTile(target)->visited)
+            {
+
+                replaceCase(mid, TileFactory::create(TileType::Path));
+                getTile(mid)->visited = true;
+
+                generate(target);
+            }
+        }
+    }
+}
+
 void Dungeon::generate()
 {
-    std::mt19937 gen(seed);
-    std::uniform_int_distribution<> boolDistrib(0, 1);
-    std::uniform_int_distribution<> rowDistrib(0, getCol() - 1);
-    std::uniform_int_distribution<> columnDistrib(0, getRow() - 1);
-    Coord startingCell;
-    if (boolDistrib(gen))
-    {
-        startingCell.x = columnDistrib(gen);
-        startingCell.y = boolDistrib(gen) * (getRow() - 1);
-    }
-    else
-    {
-        startingCell.x = boolDistrib(gen) * (getCol() - 1);
-        startingCell.y = rowDistrib(gen);
-    }
+    Coord coord = getStartingCell();
+    generate(coord);
 
-    Coord currentCell = startingCell;
-    std::vector<Coord> visitedCells;
-    do
-    {
-        if (!getTile(currentCell)->visited || visitedCells.empty())
-            grid[currentCell.y][currentCell.x] = TileFactory::create(TileType::Path);
 
-        auto test = grid[currentCell.y];
-        render();
-        std::vector<Direction> oneStepPossible;
-        getUnvisitedPossibleDirection(oneStepPossible, currentCell, 1);
-        std::vector<Direction> twoStepPossible;
-        getUnvisitedPossibleDirection(twoStepPossible, currentCell, 2);
-
-        std::map<Direction, int> directions;
-        for (auto &&p : oneStepPossible)
-        {
-            directions.insert({p, 1});
-        }
-        for (auto &&p : twoStepPossible)
-        {
-            if (!directions.count(p))
-            {
-                directions.insert({p, 1});
-            }
-            else
-            {
-                directions[p] += 1;
-            }
-        }
-        std::vector<Direction> possibleDirections;
-        for (auto &&p : directions)
-        {
-            if (p.second == 2)
-            {
-                possibleDirections.push_back(p.first);
-            }
-        }
-        if (std::distance(possibleDirections.begin(), possibleDirections.end()) == 0)
-        {
-            currentCell = visitedCells.back();
-            visitedCells.pop_back();
-            continue;
-        }
-
-        std::uniform_int_distribution<> directionDistrib(0, possibleDirections.size() - 1);
-        Direction future_direction = possibleDirections[directionDistrib(gen)];
-        visitedCells.push_back(currentCell);
-        if (future_direction == Direction::Top)
-        {
-            currentCell.y -= 1;
-        }
-        else if (future_direction == Direction::Bottom)
-        {
-            currentCell.y += 1;
-        }
-        else if (future_direction == Direction::Left)
-        {
-            currentCell.x -= 1;
-        }
-        else if (future_direction == Direction::Right)
-        {
-            currentCell.x += 1;
-        }
-
-    } while (!visitedCells.empty());
 }
 
 void Dungeon::findPath()

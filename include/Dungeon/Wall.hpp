@@ -8,7 +8,7 @@ namespace DungeonRoad
     class Wall : public Tile
     {
     public:
-        Wall() = default;
+        Wall();
         virtual ~Wall() {};
 
     public:
