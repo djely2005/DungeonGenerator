@@ -38,8 +38,7 @@ public:
     void applyDirection(Coord &, Direction &);
     bool checkRowBoundaries(int);
     bool checkColumnBoundaries(int);
-    void getPossibleDirection(std::vector<Direction> &, const Coord &);
-    void getUnvisitedPossibleDirection(std::vector<Direction> &, const Coord &, int);
+    bool checkIfDeadend(const Coord &);
     Coord getStartingCell();
     void replaceCase(const Coord &, Tile *);
     void generate(Coord &);
@@ -47,6 +46,7 @@ public:
     void render();
     void findPath();
     void addLimits();
+    void spawnMonster();
     static Dungeon *getInstance(size_t height = 5, size_t width = 5)
     {
         if (instance == nullptr)

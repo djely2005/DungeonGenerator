@@ -3,6 +3,7 @@
 DungeonRoad::Path::Path()
 {
     visited = true;
+    type = TileType::Path;
 }
 
 

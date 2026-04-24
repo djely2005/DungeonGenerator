@@ -65,30 +65,17 @@ void Dungeon::applyDirection(Coord &coord, Direction &direction)
     switch (direction)
     {
     case Direction::Top:
-        if (checkRowBoundaries(coord.y - 1))
-        {
-            coord.y -= 1;
-        }
+        coord.y -= 1;
         break;
     case Direction::Bottom:
-        if (checkRowBoundaries(coord.y + 1))
-        {
-            coord.y += 1;
-        }
+        coord.y += 1;
         break;
     case Direction::Left:
-        if (checkColumnBoundaries(coord.x - 1))
-        {
-            coord.x -= 1;
-        }
+        coord.x -= 1;
         break;
     case Direction::Right:
-        if (checkColumnBoundaries(coord.x + 1))
-        {
-            coord.x += 1;
-        }
+        coord.x += 1;
         break;
-
     default:
         break;
     }
@@ -138,8 +125,26 @@ void Dungeon::generate()
 {
     Coord coord = getStartingCell();
     generate(coord);
+}
 
+bool Dungeon::checkIfDeadend(const Coord &coord)
+{
+    return true;
+};
 
+void Dungeon::spawnMonster()
+{
+    for (size_t i = 0; i < getRow(); ++i)
+    {
+        for (size_t j = 0; j < getCol(); ++j)
+        {
+            Coord coord{
+                static_cast<int>(j),
+                static_cast<int>(i),
+            };
+        }
+        std::cout << '\n';
+    }
 }
 
 void Dungeon::findPath()
