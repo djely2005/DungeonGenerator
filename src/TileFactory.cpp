@@ -5,6 +5,7 @@
 #include "Dungeon/Path.hpp"
 #include "Dungeon/Monster.hpp"
 #include "Dungeon/Limit.hpp"
+#include "Dungeon/End.hpp"
 
 Tile* TileFactory::create(TileType tileType)
 {
@@ -28,6 +29,9 @@ Tile* TileFactory::create(TileType tileType)
         break;
     case TileType::Limit:
         result = new DungeonRoad::Limit();
+        break;
+    case TileType::End:
+        result = new DungeonRoad::End();
         break;
 
     default:

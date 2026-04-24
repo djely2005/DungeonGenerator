@@ -2,7 +2,7 @@
 
 char DungeonRoad::Treasure::render(Coord *)
 {
-    return '+';
+    return 'X';
 }
 
 

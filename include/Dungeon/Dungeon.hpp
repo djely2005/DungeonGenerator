@@ -5,6 +5,7 @@
 #include "Ui.hpp"
 #include "Coord.hpp"
 #include "Direction.hpp"
+#include "TileLocationType.hpp"
 
 class Tile;
 
@@ -15,6 +16,10 @@ private:
     size_t row;
     size_t column;
     size_t padding;
+    float monsterSpawnChances = 0.1;
+    float treasureDeadendSpawnChances = 0.9;
+    float treasureTurnSpawnChances = 0.6;
+    float trapSpawnChances = 0.1;
     long unsigned int seed = 10;
     std::mt19937 gen{seed};
     static Dungeon *instance;
@@ -35,18 +40,19 @@ public:
     Dungeon &operator=(const Dungeon &) = delete;
 
     Tile *getTile(const Coord &);
-    void applyDirection(Coord &, Direction &);
+    Coord applyDirection(const Coord &, Direction &);
     bool checkRowBoundaries(int);
     bool checkColumnBoundaries(int);
-    bool checkIfDeadend(const Coord &);
+    TileLocationType getTileLocationType(const Coord &);
     Coord getStartingCell();
     void replaceCase(const Coord &, Tile *);
+    void replaceCase(const std::vector<Coord> &, Tile *);
     void generate(Coord &);
     void generate();
     void render();
     void findPath();
     void addLimits();
-    void spawnMonster();
+    void populate();
     static Dungeon *getInstance(size_t height = 5, size_t width = 5)
     {
         if (instance == nullptr)

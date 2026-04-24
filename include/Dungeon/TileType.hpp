@@ -7,5 +7,6 @@ enum TileType
     Trap,
     Path,
     Monster,
-    Limit
+    Limit,
+    End,
 };
