@@ -2,17 +2,19 @@
 #include <vector>
 #include <random>
 #include <span>
+#include <memory>
 #include "Ui.hpp"
 #include "Coord.hpp"
 #include "Direction.hpp"
 #include "TileLocationType.hpp"
+#include "TileType.hpp"
 
 class Tile;
 
 class Dungeon
 {
 private:
-    std::vector<std::vector<Tile *>> grid;
+    std::vector<std::vector<std::unique_ptr<Tile>>> grid;
     size_t row;
     size_t column;
     size_t padding;
@@ -22,7 +24,7 @@ private:
     float trapSpawnChances = 0.1;
     long unsigned int seed = 10;
     std::mt19937 gen{seed};
-    static Dungeon *instance;
+    static std::unique_ptr<Dungeon> instance;
 
 private:
     Dungeon() = default;
@@ -37,6 +39,7 @@ public:
 
 public:
     Dungeon(const Dungeon &) = delete;
+    virtual ~Dungeon() {};
     Dungeon &operator=(const Dungeon &) = delete;
 
     Tile *getTile(const Coord &);
@@ -45,18 +48,18 @@ public:
     bool checkColumnBoundaries(int);
     TileLocationType getTileLocationType(const Coord &);
     Coord getStartingCell();
-    void replaceCase(const Coord &, Tile *);
-    void replaceCase(const std::vector<Coord> &, Tile *);
+    void replaceCase(const Coord &, TileType tileType);
+    void replaceCase(const std::vector<Coord> &, TileType tileType);
     void generate(Coord &);
     void generate();
     void render();
     void findPath();
     void addLimits();
     void populate();
-    static Dungeon *getInstance(size_t height = 5, size_t width = 5)
+    static Dungeon &getInstance(size_t height = 5, size_t width = 5)
     {
         if (instance == nullptr)
-            instance = new Dungeon(height, width);
-        return instance;
+            instance = std::unique_ptr<Dungeon>(new Dungeon(height, width));
+        return *instance;
     }
 };

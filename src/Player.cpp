@@ -19,7 +19,7 @@ void Player::removeFromInventory(int inv)
 
 void Player::move(Direction direction)
 {
-    Dungeon *dungeon = Dungeon::getInstance();
+    Dungeon& dungeon = Dungeon::getInstance();
     Coord future_coord = position;
     switch (direction)
     {
@@ -39,7 +39,7 @@ void Player::move(Direction direction)
         break;
     }
 
-    Tile *tile = dungeon->getTile(future_coord);
+    Tile *tile = dungeon.getTile(future_coord);
     bool allowed_movement = this->useEffect(tile);
 
     if (allowed_movement)

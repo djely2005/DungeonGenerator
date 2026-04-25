@@ -6,21 +6,21 @@
 #include <algorithm>
 #include <ranges>
 #include <map>
+#define pad 2
 
-Dungeon *Dungeon::instance = nullptr;
+std::unique_ptr<Dungeon> Dungeon::instance = nullptr;
 
-Dungeon::Dungeon(size_t row, size_t column)
+Dungeon::Dungeon(size_t row, size_t column) : padding(pad)
 {
-    padding = 2;
-    this->row = row + padding;
-    this->column = column + padding;
+    this->row = row + pad;
+    this->column = column + pad;
     grid.resize(getRow());
     for (size_t i = 0; i < getRow(); i++)
     {
         grid[i].resize(getCol());
         for (size_t j = 0; j < getCol(); j++)
         {
-            grid[i][j] = TileFactory::create(TileType::Wall);
+            grid[i][j] = std::unique_ptr<Tile>(TileFactory::create(TileType::Wall));;
         }
     }
     addLimits();
@@ -28,7 +28,7 @@ Dungeon::Dungeon(size_t row, size_t column)
 
 Tile *Dungeon::getTile(const Coord &coord)
 {
-    return this->grid[coord.y][coord.x];
+    return this->grid[coord.y][coord.x].get();
 }
 
 void Dungeon::addLimits()
@@ -39,7 +39,7 @@ void Dungeon::addLimits()
         {
             if (i % (row - 1) == 0 || j % (column - 1) == 0)
             {
-                grid[i][j] = TileFactory::create(TileType::Limit);
+                grid[i][j] = std::unique_ptr<Tile>(TileFactory::create(TileType::Limit));
             }
         }
     }
@@ -55,16 +55,16 @@ bool Dungeon::checkColumnBoundaries(int col)
     return 0 <= col && col < static_cast<int>(getCol());
 }
 
-void Dungeon::replaceCase(const Coord &coord, Tile *tile)
+void Dungeon::replaceCase(const Coord &coord, TileType tileType)
 {
-    grid[coord.y][coord.x] = tile;
+    grid[coord.y][coord.x] = std::unique_ptr<Tile>(TileFactory::create(tileType));
 }
 
-void Dungeon::replaceCase(const std::vector<Coord> &coords, Tile *tile)
+void Dungeon::replaceCase(const std::vector<Coord> &coords, TileType tileType)
 {
     for (auto &&coord : coords)
     {
-        grid[coord.y][coord.x] = tile;
+        grid[coord.y][coord.x] = std::unique_ptr<Tile>(TileFactory::create(tileType));
     }
 }
 
@@ -104,7 +104,7 @@ Coord Dungeon::getStartingCell()
 
 void Dungeon::generate(Coord &coord)
 {
-    replaceCase(coord, TileFactory::create(TileType::Path));
+    replaceCase(coord, TileType::Path);
 
     std::vector<Direction> dirs = {Direction::Top, Direction::Bottom, Direction::Left, Direction::Right};
     std::shuffle(dirs.begin(), dirs.end(), gen);
@@ -119,7 +119,7 @@ void Dungeon::generate(Coord &coord)
             if (!getTile(target)->visited)
             {
 
-                replaceCase(mid, TileFactory::create(TileType::Path));
+                replaceCase(mid, TileType::Path);
                 getTile(mid)->visited = true;
 
                 generate(target);
@@ -140,8 +140,7 @@ TileLocationType Dungeon::getTileLocationType(const Coord &coord)
     std::vector<Direction> dirs = {Direction::Top, Direction::Bottom, Direction::Left, Direction::Right};
     for (Direction dir : dirs)
     {
-        Coord adjacent = coord;
-        applyDirection(adjacent, dir);
+        Coord adjacent = applyDirection(coord, dir);
 
         if (checkRowBoundaries(adjacent.y) && checkColumnBoundaries(adjacent.x))
         {
@@ -286,10 +285,10 @@ void Dungeon::populate()
         }
     }
     std::uniform_int_distribution<> endDistrib(0, endPossibleCoords.size() - 1);
-    replaceCase(monsterCoords, TileFactory::create(TileType::Monster));
-    replaceCase(treasureCoords, TileFactory::create(TileType::Treasure));
-    replaceCase(trapCoords, TileFactory::create(TileType::Trap));
-    replaceCase(endPossibleCoords[endDistrib(gen)], TileFactory::create(TileType::End));
+    replaceCase(monsterCoords, TileType::Monster);
+    replaceCase(treasureCoords, TileType::Treasure);
+    replaceCase(trapCoords, TileType::Trap);
+    replaceCase(endPossibleCoords[endDistrib(gen)], TileType::End);
 }
 
 void Dungeon::findPath()
