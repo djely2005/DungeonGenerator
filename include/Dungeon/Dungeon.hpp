@@ -10,11 +10,10 @@
 #include "TileType.hpp"
 
 class Tile;
-
 class Dungeon
 {
 private:
-    std::vector<std::vector<std::unique_ptr<Tile>>> grid;
+    std::vector<std::vector<std::unique_ptr<Tile>>> grid; 
     size_t row;
     size_t column;
     size_t padding;

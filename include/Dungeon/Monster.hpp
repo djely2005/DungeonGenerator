@@ -12,7 +12,7 @@ namespace DungeonRoad
         virtual ~Monster() {};
 
     private:
-        int pv;
+        int health;
 
     public:
         char render(Coord *) override;
