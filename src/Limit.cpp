@@ -1,5 +1,6 @@
 #include "Dungeon/Limit.hpp"
 #include "Dungeon/Dungeon.hpp"
+#include "Dungeon/Player.hpp"
 
 DungeonRoad::Limit::Limit()
 {
@@ -32,7 +33,7 @@ char DungeonRoad::Limit::render(Coord *coord)
     return c;
 }
 
-bool DungeonRoad::Limit::effectOnPlayer(Player *)
+bool DungeonRoad::Limit::effectOnPlayer(Player* player)
 {
     return true;
 }

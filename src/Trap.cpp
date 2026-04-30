@@ -1,5 +1,5 @@
 #include "Dungeon/Trap.hpp"
-#include "iostream"
+#include "Dungeon/Player.hpp"
 
 char DungeonRoad::Trap::render(Coord *)
 {
@@ -11,7 +11,6 @@ bool DungeonRoad::Trap::effectOnPlayer(Player* player){
     if(player->isAlive())
     {
         player->removeHealth(10);
-        std::cout << "You stepped on a trap! Your health is now " << player->getHealth() << "." << std::endl;
     }
     return true;
 }

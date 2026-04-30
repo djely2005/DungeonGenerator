@@ -13,6 +13,7 @@ private:
     int inventory;
 
 public:
+    Player() : health(100), inventory(0) {}
     Coord getPosition() const { return position; }
     int getHealth() const { return health; }
     void setHealth(int hp) { health = hp; }
@@ -26,7 +27,7 @@ public:
     void moveTo(Coord);
     void move(Direction);
     bool isAlive() const { return health > 0; };
-    void displayStats() const;
+    void displayStatus() const;
 
 private:
     bool useEffect(Tile *);

@@ -1,4 +1,6 @@
 #include "Dungeon/Path.hpp"
+#include "Dungeon/Player.hpp"
+#include "Dungeon/Coord.hpp"
 
 DungeonRoad::Path::Path()
 {
@@ -7,12 +9,12 @@ DungeonRoad::Path::Path()
 }
 
 
-char DungeonRoad::Path::render(Coord *)
+char DungeonRoad::Path::render(Coord* coord)
 {
     return ' ';
 }
 
 
-bool DungeonRoad::Path::effectOnPlayer(Player*){
+bool DungeonRoad::Path::effectOnPlayer(Player* player){
     return true;
 }

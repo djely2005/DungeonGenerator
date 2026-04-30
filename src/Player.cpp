@@ -1,6 +1,7 @@
 #include "Dungeon/Player.hpp"
 #include "Dungeon/Dungeon.hpp"
 #include "Dungeon/Tile.hpp"
+#include "iostream"
 
 void Player::removeHealth(int hp)
 {
@@ -55,4 +56,10 @@ void Player::move(Direction direction)
 bool Player::useEffect(Tile *tile)
 {
     return tile->effectOnPlayer(this);
+}
+
+void Player::displayStatus() const {
+    std::cout << "\nPosition             : (" << position.x << ", " << position.y << ")\n";
+    std::cout << "Sante                : " << health << "/100\n";
+    std::cout << "Inventaire           : " << inventory << " tresors\n";
 }

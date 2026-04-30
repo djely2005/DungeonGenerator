@@ -1,7 +1,9 @@
 #include "Dungeon/End.hpp"
+#include "Dungeon/Player.hpp"
+#include "Dungeon/Coord.hpp"
 #include "iostream"
 
-char DungeonRoad::End::render(Coord *)
+char DungeonRoad::End::render(Coord *coord)
 {
     return 'E';
 }
