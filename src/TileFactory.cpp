@@ -38,5 +38,6 @@ Tile* TileFactory::create(TileType tileType)
         result = new DungeonRoad::Path();
         break;
     }
+    result->type = tileType;
     return result;
 }

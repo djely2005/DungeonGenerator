@@ -30,23 +30,23 @@ void Player::move(Direction direction)
     switch (direction)
     {
     case Direction::Top:
-        future_coord.y++;
-        break;
-    case Direction::Bottom:
         future_coord.y--;
         break;
+    case Direction::Bottom:
+        future_coord.y++;
+        break;
     case Direction::Left:
-        future_coord.x++;
+        future_coord.x--;
         break;
     case Direction::Right:
-        future_coord.x--;
+        future_coord.x++;
         break;
     default:
         break;
     }
 
     Tile *tile = dungeon.getTile(future_coord);
-    if (tile->type != TileType::Wall) 
+    if (tile->type != TileType::Wall && tile->type != TileType::Limit) 
     {
         this->moveTo(future_coord);
         this->useEffect(tile);

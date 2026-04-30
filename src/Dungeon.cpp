@@ -75,16 +75,16 @@ Coord Dungeon::applyDirection(const Coord &coord, Direction &direction)
     switch (direction)
     {
     case Direction::Top:
-        newCoord.y -= 1;
+        newCoord.y--;
         break;
     case Direction::Bottom:
-        newCoord.y += 1;
+        newCoord.y++;
         break;
     case Direction::Left:
-        newCoord.x -= 1;
+        newCoord.x--;
         break;
     case Direction::Right:
-        newCoord.x += 1;
+        newCoord.x++;
         break;
     default:
         break;
