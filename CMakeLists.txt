@@ -14,8 +14,10 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC include
 )
 
-target_compile_options(${PROJECT_NAME} PRIVATE
-    -Wall -Wextra -Wpedantic
-)
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

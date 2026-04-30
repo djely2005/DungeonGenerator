@@ -23,8 +23,15 @@ public:
     void removeHealth(int);
     void addToInventory(int);
     void removeFromInventory(int);
+    void moveTo(Coord);
     void move(Direction);
+    bool isAlive() const { return health > 0; };
+    void displayStats() const;
 
 private:
     bool useEffect(Tile *);
+
+public:
+    void setPosition(Coord c) { position = c; }
+    char render(Coord *) override { return '@'; }
 };

@@ -10,6 +10,8 @@
 #include "TileType.hpp"
 
 class Tile;
+class Player;
+
 class Dungeon
 {
 private:
@@ -17,10 +19,10 @@ private:
     size_t row;
     size_t column;
     size_t padding;
-    float monsterSpawnChances = 0.1;
-    float treasureDeadendSpawnChances = 0.9;
-    float treasureTurnSpawnChances = 0.6;
-    float trapSpawnChances = 0.1;
+    float monsterSpawnChances = 0.1f;
+    float treasureDeadendSpawnChances = 0.9f;
+    float treasureTurnSpawnChances = 0.6f;
+    float trapSpawnChances = 0.1f;
     long unsigned int seed = 10;
     std::mt19937 gen{seed};
     static std::unique_ptr<Dungeon> instance;
@@ -47,11 +49,16 @@ public:
     bool checkColumnBoundaries(int);
     TileLocationType getTileLocationType(const Coord &);
     Coord getStartingCell();
+    
+    Coord getSpawnPoint(); 
+
     void replaceCase(const Coord &, TileType tileType);
     void replaceCase(const std::vector<Coord> &, TileType tileType);
     void generate(Coord &);
     void generate();
-    void render();
+    
+    void render(Player* player = nullptr);
+    
     void findPath();
     void addLimits();
     void populate();

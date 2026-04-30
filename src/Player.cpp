@@ -17,6 +17,11 @@ void Player::removeFromInventory(int inv)
     inventory -= inv;
 }
 
+void Player::moveTo(Coord newPosition)
+{
+    position = newPosition;
+}
+
 void Player::move(Direction direction)
 {
     Dungeon& dungeon = Dungeon::getInstance();
@@ -40,11 +45,10 @@ void Player::move(Direction direction)
     }
 
     Tile *tile = dungeon.getTile(future_coord);
-    bool allowed_movement = this->useEffect(tile);
-
-    if (allowed_movement)
+    if (tile->type != TileType::Wall) 
     {
-        this->position = future_coord;
+        this->moveTo(future_coord);
+        this->useEffect(tile);
     }
 }
 

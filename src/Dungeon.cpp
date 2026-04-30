@@ -1,6 +1,7 @@
 #include "Dungeon/Dungeon.hpp"
 #include "Dungeon/Tile.hpp"
 #include "Dungeon/TileFactory.hpp"
+#include "Dungeon/Player.hpp"
 #include "iostream"
 #include <span>
 #include <algorithm>
@@ -295,18 +296,33 @@ void Dungeon::findPath()
 {
 }
 
-void Dungeon::render()
-{
-    for (size_t i = 0; i < row; ++i)
-    {
-        for (size_t j = 0; j < column; ++j)
-        {
+void Dungeon::render(Player* player) {
+    for (size_t i = 0; i < row; ++i) {
+        for (size_t j = 0; j < column; ++j) {
             Coord coord{
                 static_cast<int>(j),
                 static_cast<int>(i),
             };
-            std::cout << this->getTile(coord)->render(&coord);
+            
+            // Si un joueur est passé en paramètre et que la coordonnée correspond à sa position
+            if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
+                std::cout << '@';
+            } else {
+                std::cout << this->getTile(coord)->render(&coord);
+            }
         }
         std::cout << '\n';
     }
+}
+
+Coord Dungeon::getSpawnPoint() {
+    for (size_t i = 0; i < getRow(); ++i) {
+        for (size_t j = 0; j < getCol(); ++j) {
+            Coord current{static_cast<int>(j), static_cast<int>(i)};
+            if (getTile(current)->type == TileType::Path) {
+                return current;
+            }
+        }
+    }
+    return {1, 1}; // Fallback just in case
 }
