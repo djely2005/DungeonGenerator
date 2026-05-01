@@ -18,11 +18,7 @@ bool DungeonRoad::Monster::effectOnPlayer(Player* player){
     if(tolower(input)=='f') 
     {
         player->removeHealth(20);
-        if (!player->isAlive())
-        {
-            //
-        }
-        else 
+        if (player->isAlive()) 
         {
             player->addToInventory(1);
         }
@@ -32,10 +28,6 @@ bool DungeonRoad::Monster::effectOnPlayer(Player* player){
     else if(tolower(input)=='r')
     {
         player->removeHealth(5);
-        if (!player->isAlive())
-        {
-            //
-        }
     }     
     return true;
 }

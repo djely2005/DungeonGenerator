@@ -15,7 +15,14 @@ void gameLoop(Dungeon& d, Player& p) {
         d.render(&p);
         p.displayStatus();
 
-        std::cout << "\nDeplacement (Z/Q/S/D) ou 'M' pour quitter : ";
+        if (d.getTile(p.getPosition())->type == TileType::End)
+        {
+            d.getTile(p.getPosition())->effectOnPlayer(&p);
+            std::cout << "\n You've reached the end of the dungeon! Congratulations!\n";
+            playing = false;
+        } 
+
+        std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit : ";
         input = _getch(); 
         switch (tolower(input)) {
             case 'z': p.move(Direction::Top); break;
@@ -27,8 +34,9 @@ void gameLoop(Dungeon& d, Player& p) {
 
     }
 
-    if (!p.isAlive()) {
-        std::cout << "\nGAME OVER... Vous etes mort dans le donjon.\n";
+    if (!p.isAlive()) 
+    {
+        std::cout << "\nGAME OVER... You are dead in the dungeon.\n";
         playing = false;
     }
 }
