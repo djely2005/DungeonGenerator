@@ -25,11 +25,11 @@ void gameLoop(Dungeon& d, Player& p) {
             case 'm': playing = false; break;
         }
 
-        // (Ici on rajoutera plus tard la vérification de la victoire sur la case End)
     }
 
     if (!p.isAlive()) {
         std::cout << "\nGAME OVER... Vous etes mort dans le donjon.\n";
+        playing = false;
     }
 }
 

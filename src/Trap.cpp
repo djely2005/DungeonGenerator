@@ -9,10 +9,11 @@ char DungeonRoad::Trap::render(Coord *)
 
 
 bool DungeonRoad::Trap::effectOnPlayer(Player* player){
-    if(player->isAlive())
+    player->removeHealth(10);
+    if (!player->isAlive())
     {
-        player->removeHealth(10);
-    }
+        //
+    }   
     Dungeon& d = Dungeon::getInstance();
     d.replaceCase(player->getPosition(), TileType::Path);
     return true;
