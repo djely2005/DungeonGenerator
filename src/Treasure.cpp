@@ -5,12 +5,12 @@
 
 char DungeonRoad::Treasure::render(Coord *)
 {
-    return 'X';
+    return '+';
 }
 
 
 bool DungeonRoad::Treasure::effectOnPlayer(Player* player){
-    player->addToInventory(10);
+    player->addToInventory(1);
     Dungeon& d = Dungeon::getInstance();
     d.replaceCase(player->getPosition(), TileType::Path);
     return true;

@@ -395,7 +395,7 @@ void Dungeon::displayBFS(const std::vector<Coord>& path, Player* player) {
             if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
                 std::cout << '@';
             } else if (std::find(path.begin(), path.end(), coord) != path.end()) {
-                std::cout << '*';
+                std::cout << '.';
             } else {
                 std::cout << this->getTile(coord)->render(&coord);
             }

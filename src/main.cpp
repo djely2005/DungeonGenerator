@@ -18,11 +18,13 @@ void gameLoop(Dungeon& d, Player& p) {
         if (d.getTile(p.getPosition())->type == TileType::End)
         {
             d.getTile(p.getPosition())->effectOnPlayer(&p);
+            std::cout << "\nPress any key to continue...\n" << std::endl;
+            _getch();
             playing = false;
         } 
         else
         {
-            std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit : " << std::endl;
+            std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit :\n" << std::endl;
             input = _getch(); 
             switch (tolower(input)) {
                 case 'z': p.move(Direction::Top); break;
@@ -35,7 +37,7 @@ void gameLoop(Dungeon& d, Player& p) {
                     system("cls");
                     d.displayBFS(path, &p);
                     p.displayStatus();
-                    std::cout << "\nPress any key to continue..." << std::endl;
+                    std::cout << "\nPress any key to continue...\n" << std::endl;
                     _getch();
                     break;
                 }
@@ -47,6 +49,8 @@ void gameLoop(Dungeon& d, Player& p) {
     if (!p.isAlive()) 
     {
         std::cout << "\nGAME OVER... You are dead in the dungeon.\n" << std::endl;
+        std::cout << "\nPress any key to continue...\n" << std::endl;
+        _getch();
         playing = false;
     }
 }

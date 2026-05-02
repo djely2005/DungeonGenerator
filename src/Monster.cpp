@@ -13,7 +13,7 @@ char DungeonRoad::Monster::render(Coord* coord)
 
 bool DungeonRoad::Monster::effectOnPlayer(Player* player){
     char input;
-    std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health) or run away 'R' (-5 health) ? ";
+    std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health) or run away 'R' (-5 health) ?\n";
     input = _getch(); 
     if(tolower(input)=='f') 
     {
