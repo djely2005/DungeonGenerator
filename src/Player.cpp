@@ -59,7 +59,12 @@ bool Player::useEffect(Tile *tile)
 }
 
 void Player::displayStatus() const {
-    std::cout << "\nPosition             : (" << position.x << ", " << position.y << ")\n";
-    std::cout << "Sante                : " << health << "/100\n";
-    std::cout << "Inventaire           : " << inventory << " tresors\n";
+    Dungeon& d = Dungeon::getInstance();
+    std::vector<Coord> path = d.findPath(position, d.getEndCell());
+    int rest = path.size() - 1;
+
+    std::cout << "\nPosition               : (" << position.x << ", " << position.y << ")\n";
+    std::cout << "Health Points          : " << health << "/100\n";
+    std::cout << "Inventory              : " << inventory << " treasures\n";
+    std::cout << "Distance to Exit       : " << rest << " steps\n";
 }

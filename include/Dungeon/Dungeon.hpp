@@ -50,7 +50,8 @@ public:
     TileLocationType getTileLocationType(const Coord &);
     Coord getStartingCell();
     
-    Coord getSpawnPoint(); 
+    Coord getSpawnPoint();
+    Coord getEndCell(); 
 
     void replaceCase(const Coord &, TileType tileType);
     void replaceCase(const std::vector<Coord> &, TileType tileType);
@@ -59,7 +60,10 @@ public:
     
     void render(Player* player = nullptr);
     
-    void findPath();
+    std::vector<Coord> findPath(Coord start, Coord end); 
+    std::vector<Coord> reconstructPath(const std::vector<std::vector<Coord>>& parent, Coord start, Coord end);
+    void displayBFS(const std::vector<Coord>& path, Player* player = nullptr);
+    
     void addLimits();
     void populate();
     static Dungeon &getInstance(size_t height = 5, size_t width = 5)

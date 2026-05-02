@@ -18,25 +18,35 @@ void gameLoop(Dungeon& d, Player& p) {
         if (d.getTile(p.getPosition())->type == TileType::End)
         {
             d.getTile(p.getPosition())->effectOnPlayer(&p);
-            std::cout << "\n You've reached the end of the dungeon! Congratulations!\n";
             playing = false;
         } 
-
-        std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit : ";
-        input = _getch(); 
-        switch (tolower(input)) {
-            case 'z': p.move(Direction::Top); break;
-            case 's': p.move(Direction::Bottom); break;
-            case 'q': p.move(Direction::Left); break;
-            case 'd': p.move(Direction::Right); break;
-            case 'm': playing = false; break;
+        else
+        {
+            std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit : " << std::endl;
+            input = _getch(); 
+            switch (tolower(input)) {
+                case 'z': p.move(Direction::Top); break;
+                case 's': p.move(Direction::Bottom); break;
+                case 'q': p.move(Direction::Left); break;
+                case 'd': p.move(Direction::Right); break;
+                case 'm': playing = false; break;
+                case 'p': {
+                    std::vector<Coord> path = d.findPath(p.getPosition(), d.getEndCell());
+                    system("cls");
+                    d.displayBFS(path, &p);
+                    p.displayStatus();
+                    std::cout << "\nPress any key to continue..." << std::endl;
+                    _getch();
+                    break;
+                }
+            }
         }
 
     }
 
     if (!p.isAlive()) 
     {
-        std::cout << "\nGAME OVER... You are dead in the dungeon.\n";
+        std::cout << "\nGAME OVER... You are dead in the dungeon.\n" << std::endl;
         playing = false;
     }
 }

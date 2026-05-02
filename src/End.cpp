@@ -12,7 +12,7 @@ char DungeonRoad::End::render(Coord *coord)
 bool DungeonRoad::End::effectOnPlayer(Player* player){
     if(player->isAlive())
     {
-        std::cout << "Congratulations! You've reached the end of the dungeon!" << std::endl;
+        std::cout << "\n Congratulations... You've reached the end of the dungeon !" << std::endl;
     }
     return true;
 }
