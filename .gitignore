@@ -5,3 +5,4 @@ build/
 Debug/
 CMakeFiles
 CMakeCache.txt
+saves/*

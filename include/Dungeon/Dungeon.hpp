@@ -57,6 +57,7 @@ public:
     void replaceCase(const std::vector<Coord> &, TileType tileType);
     void generate(Coord &);
     void generate();
+    void saveAsTextFile();
     
     void render(Player* player = nullptr);
     

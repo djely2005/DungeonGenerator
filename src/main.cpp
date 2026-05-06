@@ -59,6 +59,7 @@ int main(){
     Dungeon& d = Dungeon::getInstance(21, 41);
     d.generate();
     d.populate();
+    d.saveAsTextFile();
     Player player;
     player.setPosition(d.getSpawnPoint());
     gameLoop(d, player);

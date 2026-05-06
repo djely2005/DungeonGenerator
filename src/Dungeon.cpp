@@ -9,7 +9,11 @@
 #include <map>
 #define pad 2
 #include <queue>
-
+#include <chrono>
+#include <sstream>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
 std::unique_ptr<Dungeon> Dungeon::instance = nullptr;
 
 Dungeon::Dungeon(size_t row, size_t column) : padding(pad)
@@ -27,6 +31,8 @@ Dungeon::Dungeon(size_t row, size_t column) : padding(pad)
     }
     addLimits();
 }
+
+
 
 Tile *Dungeon::getTile(const Coord &coord)
 {
@@ -134,6 +140,34 @@ void Dungeon::generate()
 {
     Coord coord = getStartingCell();
     generate(coord);
+}
+
+void Dungeon::saveAsTextFile()
+{
+    auto now = std::chrono::system_clock::now();
+    std::string folder = "saves/";
+    std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&now_time), "%Y-%m-%d_%H-%M-%S");
+    std::string filename = "log_" + ss.str() + ".txt";
+
+    std::ofstream outFile(folder + filename);
+    if (outFile.is_open()) {
+        for (size_t i = 0; i < row; ++i) {
+            for (size_t j = 0; j < column; ++j) {
+                Coord coord{
+                    static_cast<int>(j),
+                    static_cast<int>(i),
+                };
+            
+                outFile << this->getTile(coord)->render(&coord);
+            }
+        outFile << '\n';
+    }
+    } else {
+        std::cerr << "Error: Could not create file." << std::endl;
+    }
 }
 
 TileLocationType Dungeon::getTileLocationType(const Coord &coord)
@@ -301,7 +335,6 @@ void Dungeon::render(Player* player) {
                 static_cast<int>(i),
             };
             
-            // Si un joueur est passé en paramètre et que la coordonnée correspond à sa position
             if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
                 std::cout << '@';
             } else {
