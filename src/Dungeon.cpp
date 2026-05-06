@@ -1,12 +1,14 @@
 #include "Dungeon/Dungeon.hpp"
 #include "Dungeon/Tile.hpp"
 #include "Dungeon/TileFactory.hpp"
+#include "Dungeon/Player.hpp"
 #include "iostream"
 #include <span>
 #include <algorithm>
 #include <ranges>
 #include <map>
 #define pad 2
+#include <queue>
 
 std::unique_ptr<Dungeon> Dungeon::instance = nullptr;
 
@@ -74,16 +76,16 @@ Coord Dungeon::applyDirection(const Coord &coord, Direction &direction)
     switch (direction)
     {
     case Direction::Top:
-        newCoord.y -= 1;
+        newCoord.y--;
         break;
     case Direction::Bottom:
-        newCoord.y += 1;
+        newCoord.y++;
         break;
     case Direction::Left:
-        newCoord.x -= 1;
+        newCoord.x--;
         break;
     case Direction::Right:
-        newCoord.x += 1;
+        newCoord.x++;
         break;
     default:
         break;
@@ -291,21 +293,112 @@ void Dungeon::populate()
     replaceCase(endPossibleCoords[endDistrib(gen)], TileType::End);
 }
 
-void Dungeon::findPath()
-{
-}
-
-void Dungeon::render()
-{
-    for (size_t i = 0; i < row; ++i)
-    {
-        for (size_t j = 0; j < column; ++j)
-        {
+void Dungeon::render(Player* player) {
+    for (size_t i = 0; i < row; ++i) {
+        for (size_t j = 0; j < column; ++j) {
             Coord coord{
                 static_cast<int>(j),
                 static_cast<int>(i),
             };
-            std::cout << this->getTile(coord)->render(&coord);
+            
+            // Si un joueur est passé en paramètre et que la coordonnée correspond à sa position
+            if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
+                std::cout << '@';
+            } else {
+                std::cout << this->getTile(coord)->render(&coord);
+            }
+        }
+        std::cout << '\n';
+    }
+}
+
+Coord Dungeon::getSpawnPoint() {
+    for (size_t i = 0; i < getRow(); ++i) {
+        for (size_t j = 0; j < getCol(); ++j) {
+            Coord current{static_cast<int>(j), static_cast<int>(i)};
+            if (getTile(current)->type == TileType::Path) {
+                return current;
+            }
+        }
+    }
+    return {1, 1}; // Fallback just in case
+}
+
+Coord Dungeon::getEndCell() {
+    for (size_t i = 0; i < getRow(); ++i) {
+        for (size_t j = 0; j < getCol(); ++j) {
+            Coord current{static_cast<int>(j), static_cast<int>(i)};
+            if (getTile(current)->type == TileType::End) {
+                return current;
+            }
+        }
+    }
+    return {22, 42}; // Fallback just in case
+}
+
+std::vector<Coord> Dungeon::findPath(Coord start, Coord end) {
+    // grille est implicite puisqu'on est dans la classe Dungeon
+
+    std::queue<Coord> file;
+    std::vector<std::vector<bool>> visite(getRow(), std::vector<bool>(getCol(), false));
+    std::vector<std::vector<Coord>> parent(getRow(), std::vector<Coord>(getCol(), {-1, -1}));
+
+    file.push(start);
+    visite[start.y][start.x] = true;
+
+    while (!file.empty()) {
+        Coord courant = file.front();
+        file.pop();
+
+        if (courant.x == end.x && courant.y == end.y) {
+            return reconstructPath(parent, start, end);
+        }
+
+        std::vector<Direction> dirs = {Direction::Top, Direction::Bottom, Direction::Left, Direction::Right};
+        for (Direction dir : dirs) {
+            Coord v = applyDirection(courant, dir);
+            
+            if (checkRowBoundaries(v.y) && checkColumnBoundaries(v.x)) {
+                Tile* tile = getTile(v);
+                
+                if (!visite[v.y][v.x] && tile->type != TileType::Wall && tile->type != TileType::Limit) {
+                    visite[v.y][v.x] = true;
+                    parent[v.y][v.x] = courant;
+                    file.push(v);
+                }
+            }
+        }
+    }
+    return {};
+}
+
+std::vector<Coord> Dungeon::reconstructPath(const std::vector<std::vector<Coord>>& parent, Coord start, Coord end) {
+    
+    std::vector<Coord> path;
+    Coord current = end;
+    
+    while (current.x != start.x || current.y != start.y) {
+        
+        path.insert(path.begin(), current);
+        current = parent[current.y][current.x];
+    }
+
+    path.insert(path.begin(), start);
+    return path;
+}
+
+void Dungeon::displayBFS(const std::vector<Coord>& path, Player* player) {
+    for (size_t i = 0; i < row; ++i) {
+        for (size_t j = 0; j < column; ++j) {
+            Coord coord{static_cast<int>(j), static_cast<int>(i)};
+            
+            if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
+                std::cout << '@';
+            } else if (std::find(path.begin(), path.end(), coord) != path.end()) {
+                std::cout << '.';
+            } else {
+                std::cout << this->getTile(coord)->render(&coord);
+            }
         }
         std::cout << '\n';
     }

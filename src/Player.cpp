@@ -1,6 +1,7 @@
 #include "Dungeon/Player.hpp"
 #include "Dungeon/Dungeon.hpp"
 #include "Dungeon/Tile.hpp"
+#include "iostream"
 
 void Player::removeHealth(int hp)
 {
@@ -17,6 +18,11 @@ void Player::removeFromInventory(int inv)
     inventory -= inv;
 }
 
+void Player::moveTo(Coord newPosition)
+{
+    position = newPosition;
+}
+
 void Player::move(Direction direction)
 {
     Dungeon& dungeon = Dungeon::getInstance();
@@ -24,31 +30,41 @@ void Player::move(Direction direction)
     switch (direction)
     {
     case Direction::Top:
-        future_coord.y++;
-        break;
-    case Direction::Bottom:
         future_coord.y--;
         break;
+    case Direction::Bottom:
+        future_coord.y++;
+        break;
     case Direction::Left:
-        future_coord.x++;
+        future_coord.x--;
         break;
     case Direction::Right:
-        future_coord.x--;
+        future_coord.x++;
         break;
     default:
         break;
     }
 
     Tile *tile = dungeon.getTile(future_coord);
-    bool allowed_movement = this->useEffect(tile);
-
-    if (allowed_movement)
+    if (tile->type != TileType::Wall && tile->type != TileType::Limit) 
     {
-        this->position = future_coord;
+        this->moveTo(future_coord);
+        this->useEffect(tile);
     }
 }
 
 bool Player::useEffect(Tile *tile)
 {
     return tile->effectOnPlayer(this);
+}
+
+void Player::displayStatus() const {
+    Dungeon& d = Dungeon::getInstance();
+    std::vector<Coord> path = d.findPath(position, d.getEndCell());
+    int rest = path.size() - 1;
+
+    std::cout << "\nPosition               : (" << position.x << ", " << position.y << ")\n";
+    std::cout << "Health Points          : " << health << "/100\n";
+    std::cout << "Inventory              : " << inventory << " treasures\n";
+    std::cout << "Distance to Exit       : " << rest << " steps\n";
 }
