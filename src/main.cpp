@@ -2,11 +2,12 @@
 #include "Dungeon/Tile.hpp"
 #include "Dungeon/Player.hpp"
 #include "iostream"
-// with Windows use <conio.h> for the function _getch() to read keyboard input
-// withLinux/Mac use <termios.h> 
+#include "Dungeon/Console.hpp"
+
 #include <conio.h>
 
 void gameLoop(Dungeon& d, Player& p) {
+    Console& console = Console::getInstance();
     char input;
     bool playing = true;
 
@@ -19,13 +20,13 @@ void gameLoop(Dungeon& d, Player& p) {
         {
             d.getTile(p.getPosition())->effectOnPlayer(&p);
             std::cout << "\nPress any key to continue...\n" << std::endl;
-            _getch();
+            console.getKeyDown();
             playing = false;
         } 
         else
         {
             std::cout << "\nTo move use (Z/Q/S/D) or 'M' to quit :\n" << std::endl;
-            input = _getch(); 
+            input = console.getKeyDown();; 
             switch (tolower(input)) {
                 case 'z': p.move(Direction::Top); break;
                 case 's': p.move(Direction::Bottom); break;
@@ -38,7 +39,7 @@ void gameLoop(Dungeon& d, Player& p) {
                     d.displayBFS(path, &p);
                     p.displayStatus();
                     std::cout << "\nPress any key to continue...\n" << std::endl;
-                    _getch();
+                    console.getKeyDown();;
                     break;
                 }
             }
@@ -50,7 +51,7 @@ void gameLoop(Dungeon& d, Player& p) {
     {
         std::cout << "\nGAME OVER... You are dead in the dungeon.\n" << std::endl;
         std::cout << "\nPress any key to continue...\n" << std::endl;
-        _getch();
+        console.getKeyDown();;
         playing = false;
     }
 }

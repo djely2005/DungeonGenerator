@@ -2,6 +2,7 @@
 #include "Dungeon/Player.hpp"
 #include "Dungeon/Coord.hpp"
 #include "Dungeon/Dungeon.hpp"
+#include "Dungeon/Console.hpp"
 #include "iostream"
 #include <conio.h>
 
@@ -13,10 +14,11 @@ char DungeonRoad::Monster::render(Coord* coord)
 
 bool DungeonRoad::Monster::effectOnPlayer(Player* player){
     char input;
+    Console& console = Console::getInstance();
     std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health), run away 'R' (-5 health) Or stay where you are 'S' ?\n";
     do
     {
-        input = tolower(_getch());
+        input = tolower(console.getKeyDown());
         if(input=='f') 
         {
             player->removeHealth(20);
