@@ -35,5 +35,5 @@ char DungeonRoad::Limit::render(Coord *coord)
 
 bool DungeonRoad::Limit::effectOnPlayer(Player* player)
 {
-    return true;
+    return false;
 }

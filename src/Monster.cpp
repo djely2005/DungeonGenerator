@@ -13,21 +13,31 @@ char DungeonRoad::Monster::render(Coord* coord)
 
 bool DungeonRoad::Monster::effectOnPlayer(Player* player){
     char input;
-    std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health) or run away 'R' (-5 health) ?\n";
-    input = _getch(); 
-    if(tolower(input)=='f') 
+    std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health), run away 'R' (-5 health) Or stay where you are 'S' ?\n";
+    do
     {
-        player->removeHealth(20);
-        if (player->isAlive()) 
+        input = tolower(_getch());
+        if(input=='f') 
         {
-            player->addToInventory(1);
+            player->removeHealth(20);
+            if (player->isAlive()) 
+            {
+                player->addToInventory(1);
+            }
+            Dungeon& d = Dungeon::getInstance();
+            d.replaceCase(player->getPosition(), TileType::Path);
+            break;
         }
-        Dungeon& d = Dungeon::getInstance();
-        d.replaceCase(player->getPosition(), TileType::Path);
-    }
-    else if(tolower(input)=='r')
-    {
-        player->removeHealth(5);
-    }     
+        else if(input=='r')
+        {
+            player->removeHealth(5);
+            break;
+        }
+        else if(input=='s')
+        {
+            return false;
+        }
+    } while (input != 'f' || input != 'r' || input != 's');
+    
     return true;
 }

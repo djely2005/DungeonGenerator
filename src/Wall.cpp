@@ -16,5 +16,5 @@ char DungeonRoad::Wall::render(Coord *)
 bool DungeonRoad::Wall::effectOnPlayer(Player* player)
 {
     std::cout << "You can't move there, it's a wall!" << std::endl;
-    return true;
+    return false;
 }

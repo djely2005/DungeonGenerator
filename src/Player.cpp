@@ -46,10 +46,10 @@ void Player::move(Direction direction)
     }
 
     Tile *tile = dungeon.getTile(future_coord);
-    if (tile->type != TileType::Wall && tile->type != TileType::Limit) 
+    if (this->useEffect(tile)) 
     {
         this->moveTo(future_coord);
-        this->useEffect(tile);
+        
     }
 }
 
