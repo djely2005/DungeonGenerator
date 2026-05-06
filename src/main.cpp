@@ -4,8 +4,6 @@
 #include "iostream"
 #include "Dungeon/Console.hpp"
 
-#include <conio.h>
-
 void gameLoop(Dungeon& d, Player& p) {
     Console& console = Console::getInstance();
     char input;
