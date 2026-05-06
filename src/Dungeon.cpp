@@ -336,7 +336,7 @@ void Dungeon::render(Player* player) {
             };
             
             if (player != nullptr && player->getPosition().x == coord.x && player->getPosition().y == coord.y) {
-                std::cout << '@';
+                std::cout << player->render(nullptr);
             } else {
                 std::cout << this->getTile(coord)->render(&coord);
             }
