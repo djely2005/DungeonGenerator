@@ -15,7 +15,6 @@ Le projet utilise **CMake** avec les paramètres suivants :
 - avec MSVC, l'option `/W4` est activée ;
 - avec GCC/Clang, les options `-Wall -Wextra -Wpedantic` sont activées.
 
-> Le README du dépôt ne contient pas d'instructions d'installation détaillées au moment de la rédaction, donc les commandes ci-dessous sont déduites de la configuration `CMakeLists.txt`.
 
 ---
 
