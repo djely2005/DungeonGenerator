@@ -9,9 +9,9 @@ char DungeonRoad::Treasure::render(Coord *)
 }
 
 
-bool DungeonRoad::Treasure::effectOnPlayer(Player* player){
+void DungeonRoad::Treasure::effectOnPlayer(Player* player, Coord& coord){
+    player->moveTo(coord);
     player->addToInventory(1);
     Dungeon& d = Dungeon::getInstance();
     d.replaceCase(player->getPosition(), TileType::Path);
-    return true;
 }

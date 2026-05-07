@@ -16,6 +16,6 @@ namespace DungeonRoad
 
     public:
         char render(Coord *) override;
-        bool effectOnPlayer(Player *) override;
+        void effectOnPlayer(Player *, Coord&) override;
     };
 } // namespace DungeonRoad

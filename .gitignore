@@ -1,8 +1,8 @@
 .vscode
+CMakeCache.txt
 
 
 build/
 Debug/
 CMakeFiles
-CMakeCache.txt
 saves/*

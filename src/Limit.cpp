@@ -33,7 +33,7 @@ char DungeonRoad::Limit::render(Coord *coord)
     return c;
 }
 
-bool DungeonRoad::Limit::effectOnPlayer(Player* player)
+void DungeonRoad::Limit::effectOnPlayer(Player* player, Coord& coord)
 {
-    return false;
+    
 }

@@ -5,13 +5,14 @@
 #include "Dungeon/Console.hpp"
 #include "iostream"
 
+
 char DungeonRoad::Monster::render(Coord* coord)
 {
     return 'M';
 }
 
 
-bool DungeonRoad::Monster::effectOnPlayer(Player* player){
+void DungeonRoad::Monster::effectOnPlayer(Player* player, Coord& coord){
     char input;
     Console& console = Console::getInstance();
     std::cout << "\n A monster attacks you! Do you want to fight 'F' (-20 health), run away 'R' (-5 health) Or stay where you are 'S' ?\n";
@@ -20,6 +21,7 @@ bool DungeonRoad::Monster::effectOnPlayer(Player* player){
         input = tolower(console.getKeyDown());
         if(input=='f') 
         {
+            player->moveTo(coord);
             player->removeHealth(20);
             if (player->isAlive()) 
             {
@@ -31,14 +33,14 @@ bool DungeonRoad::Monster::effectOnPlayer(Player* player){
         }
         else if(input=='r')
         {
+            player->moveTo(coord);
             player->removeHealth(5);
             break;
         }
         else if(input=='s')
         {
-            return false;
+            break;
         }
-    } while (input != 'f' || input != 'r' || input != 's');
+    } while (true);
     
-    return true;
 }

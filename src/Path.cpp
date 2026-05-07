@@ -15,6 +15,6 @@ char DungeonRoad::Path::render(Coord* coord)
 }
 
 
-bool DungeonRoad::Path::effectOnPlayer(Player* player){
-    return true;
+void DungeonRoad::Path::effectOnPlayer(Player* player, Coord& coord){
+    player->moveTo(coord);
 }

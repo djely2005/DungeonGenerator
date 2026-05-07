@@ -13,7 +13,7 @@ public:
 
 public:
     virtual ~Tile() {};
-    virtual bool effectOnPlayer(Player *) = 0;
+    virtual void effectOnPlayer(Player *, Coord&) = 0;
 
 protected:
     virtual char render(Coord *) = 0;

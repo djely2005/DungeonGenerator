@@ -46,16 +46,12 @@ void Player::move(Direction direction)
     }
 
     Tile *tile = dungeon.getTile(future_coord);
-    if (this->useEffect(tile)) 
-    {
-        this->moveTo(future_coord);
-        
-    }
+    this->useEffect(tile, future_coord); 
 }
 
-bool Player::useEffect(Tile *tile)
+void Player::useEffect(Tile *tile, Coord& coord)
 {
-    return tile->effectOnPlayer(this);
+    tile->effectOnPlayer(this, coord);
 }
 
 void Player::displayStatus() const {

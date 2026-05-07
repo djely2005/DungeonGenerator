@@ -8,9 +8,9 @@ char DungeonRoad::Trap::render(Coord *)
 }
 
 
-bool DungeonRoad::Trap::effectOnPlayer(Player* player){
+void DungeonRoad::Trap::effectOnPlayer(Player* player, Coord& coord){
+    player->moveTo(coord);
     player->removeHealth(10);  
     Dungeon& d = Dungeon::getInstance();
     d.replaceCase(player->getPosition(), TileType::Path);
-    return true;
 }

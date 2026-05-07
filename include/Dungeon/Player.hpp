@@ -11,6 +11,7 @@ private:
     Coord position;
     int health;
     int inventory;
+    bool finished = false;
 
 public:
     Player() : health(100), inventory(0) {}
@@ -27,10 +28,12 @@ public:
     void moveTo(Coord);
     void move(Direction);
     bool isAlive() const { return health > 0; };
+    bool isGameFinished() const { return finished; }
+    void finishGame() { finished = true; }
     void displayStatus() const;
 
 private:
-    bool useEffect(Tile *);
+    void useEffect(Tile *, Coord&);
 
 public:
     void setPosition(Coord c) { position = c; }
